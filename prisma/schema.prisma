@@ -12,29 +12,26 @@ datasource db {
 
 model User {
   id        Int      @id @default(autoincrement())
+  email     String   @unique
+  hash      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  email String @unique
-  hash  String
-  Deck  Deck[]
+  decks     Deck[]
 }
 
 model Deck {
-  id          Int     @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   title       String
   description String?
-
-  userId    Int
-  user      User        @relation(fields: [userId], references: [id])
-  Flashcard Flashcard[]
+  userId      Int
+  user        User        @relation(fields: [userId], references: [id])
+  flashcards  Flashcard[]
 }
 
 model Flashcard {
-  id    Int    @id @default(autoincrement())
-  front String
-  back  String
-
+  id     Int    @id @default(autoincrement())
+  front  String
+  back   String
   deckId Int
-  deck   Deck @relation(fields: [deckId], references: [id])
+  deck   Deck   @relation(fields: [deckId], references: [id])
 }
