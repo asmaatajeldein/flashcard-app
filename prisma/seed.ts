@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import * as argon from 'argon2';
 
 // intialize prisma client
 const prisma = new PrismaClient();
@@ -9,7 +10,7 @@ async function main() {
     update: {},
     create: {
       email: 'lorelaigilmore@email.com',
-      hash: 'superhashed',
+      hash: await argon.hash('12345'),
       decks: {
         create: {
           title: 'deck 1',
@@ -29,7 +30,7 @@ async function main() {
     update: {},
     create: {
       email: 'rorygilmore@email.com',
-      hash: 'sosuperhashed',
+      hash: await argon.hash('12345'),
       decks: {
         create: {
           title: 'deck 1',
