@@ -24,7 +24,7 @@ model Deck {
   title       String
   description String?
   userId      Int
-  user        User        @relation(fields: [userId], references: [id])
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   flashcards  Flashcard[]
 }
 
@@ -33,5 +33,5 @@ model Flashcard {
   front  String
   back   String
   deckId Int
-  deck   Deck   @relation(fields: [deckId], references: [id])
+  deck   Deck   @relation(fields: [deckId], references: [id], onDelete: Cascade)
 }
