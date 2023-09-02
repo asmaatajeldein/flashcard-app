@@ -74,6 +74,10 @@ export class DeckService {
         `Can't find deck with id ${deckId} for the user ${userId}`,
       );
 
+    await this.prismaService.deck.delete({
+      where: { id: deckId },
+    });
+
     return { message: 'Deck was deleted successfully', deck };
   }
 }
