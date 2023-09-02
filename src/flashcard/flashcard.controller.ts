@@ -13,12 +13,23 @@ import { FlashcardService } from './flashcard.service';
 import { CreateFlashcardDto, EditFlashcardDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
+import {
+  ApiOkResponse,
+  ApiCreatedResponse,
+  ApiUnauthorizedResponse,
+  ApiNotFoundResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('flashcards')
 @UseGuards(JwtGuard)
 @Controller()
 export class FlashcardController {
   constructor(private readonly flashcardService: FlashcardService) {}
 
+  @ApiCreatedResponse({ description: 'Flashcard was created successfully' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized access to resources' })
+  @ApiNotFoundResponse({ description: 'Cannot find specified deck' })
   @Post()
   createFlashcard(
     @Param('deckId', ParseIntPipe) deckId: number,
@@ -28,6 +39,9 @@ export class FlashcardController {
     return this.flashcardService.createFlashcard({ deckId, dto, userId });
   }
 
+  @ApiOkResponse({ description: "Gets all deck's flashcards" })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized access to resources' })
+  @ApiNotFoundResponse({ description: 'Cannot find specified deck' })
   @Get()
   getFlashcards(
     @Param('deckId', ParseIntPipe) deckId: number,
@@ -36,6 +50,10 @@ export class FlashcardController {
     return this.flashcardService.getFlashcards({ deckId, userId });
   }
 
+  @ApiOkResponse({ description: 'Gets specific flashcard in a deck' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized access to resources' })
+  @ApiNotFoundResponse({ description: 'Cannot find specified deck' })
+  @ApiNotFoundResponse({ description: 'Cannot find specified flashcard' })
   @Get(':id')
   getFlashcardById(
     @Param('deckId', ParseIntPipe) deckId: number,
@@ -49,6 +67,10 @@ export class FlashcardController {
     });
   }
 
+  @ApiOkResponse({ description: 'Flashcard created successfully' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized access to resources' })
+  @ApiNotFoundResponse({ description: 'Cannot find specified deck' })
+  @ApiNotFoundResponse({ description: 'Cannot find specified flashcard' })
   @Patch(':id')
   editFlashcardById(
     @Param('deckId', ParseIntPipe) deckId: number,
@@ -64,6 +86,10 @@ export class FlashcardController {
     });
   }
 
+  @ApiOkResponse({ description: 'Flashcard deleted successfully' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized access to resources' })
+  @ApiNotFoundResponse({ description: 'Cannot find specified deck' })
+  @ApiNotFoundResponse({ description: 'Cannot find specified flashcard' })
   @Delete(':id')
   remove(
     @Param('deckId', ParseIntPipe) deckId: number,

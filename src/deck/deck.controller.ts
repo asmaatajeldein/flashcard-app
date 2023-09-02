@@ -13,19 +13,30 @@ import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
 import { DeckService } from './deck.service';
 import { CreateDeckDto, EditDeckDto } from './dto';
+import {
+  ApiOkResponse,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiUnauthorizedResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('decks')
 @UseGuards(JwtGuard)
 @Controller()
 export class DeckController {
   constructor(private deckService: DeckService) {}
 
   // get all user decks
+  @ApiOkResponse({ description: "Gets all user's decks" })
   @Get()
   getDecks(@GetUser('id') userId: number) {
     return this.deckService.getDecks(userId);
   }
 
   // get a specific deck
+  @ApiOkResponse({ description: 'Gets specified deck' })
+  @ApiNotFoundResponse({ description: 'Cannot find specified deck' })
   @Get(':id')
   getDeckById(
     @Param('id', ParseIntPipe) deckId: number,
@@ -35,12 +46,16 @@ export class DeckController {
   }
 
   // create a deck
+  @ApiCreatedResponse({ description: 'Deck was created successfully' })
   @Post()
   createDeck(@Body() dto: CreateDeckDto, @GetUser('id') userId: number) {
     return this.deckService.createDeck(userId, dto);
   }
 
   // update a deck
+  @ApiCreatedResponse({ description: 'Deck was updated successfully' })
+  @ApiNotFoundResponse({ description: 'Cannot find specified deck' })
+  @ApiUnauthorizedResponse({ description: 'Access to resources denied' })
   @Patch(':id')
   editDeckById(
     @Param('id', ParseIntPipe) deckId: number,
@@ -51,6 +66,9 @@ export class DeckController {
   }
 
   // remove a deck
+  @ApiOkResponse({ description: 'Deck was deleted successfully' })
+  @ApiNotFoundResponse({ description: 'Cannot find specified deck' })
+  @ApiUnauthorizedResponse({ description: 'Access to resources denied' })
   @Delete(':id')
   deleteDeckById(
     @Param('id', ParseIntPipe) deckId: number,
