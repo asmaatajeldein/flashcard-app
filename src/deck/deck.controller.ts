@@ -15,7 +15,7 @@ import { DeckService } from './deck.service';
 import { CreateDeckDto, EditDeckDto } from './dto';
 
 @UseGuards(JwtGuard)
-@Controller('decks')
+@Controller()
 export class DeckController {
   constructor(private deckService: DeckService) {}
 
