@@ -18,10 +18,12 @@ import {
   ApiCreatedResponse,
   ApiUnauthorizedResponse,
   ApiNotFoundResponse,
+  ApiBearerAuth,
   ApiTags,
 } from '@nestjs/swagger';
 
 @ApiTags('flashcards')
+@ApiBearerAuth('JWT-auth')
 @UseGuards(JwtGuard)
 @Controller()
 export class FlashcardController {

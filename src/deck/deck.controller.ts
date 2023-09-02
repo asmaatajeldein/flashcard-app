@@ -18,10 +18,12 @@ import {
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiUnauthorizedResponse,
+  ApiBearerAuth,
   ApiTags,
 } from '@nestjs/swagger';
 
 @ApiTags('decks')
+@ApiBearerAuth('JWT-auth')
 @UseGuards(JwtGuard)
 @Controller()
 export class DeckController {
