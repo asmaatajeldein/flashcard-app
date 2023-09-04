@@ -6,12 +6,10 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   ParseIntPipe,
 } from '@nestjs/common';
 import { FlashcardService } from './flashcard.service';
 import { CreateFlashcardDto, EditFlashcardDto } from './dto';
-import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
 import {
   ApiOkResponse,
@@ -24,7 +22,6 @@ import {
 
 @ApiTags('flashcards')
 @ApiBearerAuth('JWT-auth')
-@UseGuards(JwtGuard)
 @Controller()
 export class FlashcardController {
   constructor(private readonly flashcardService: FlashcardService) {}
