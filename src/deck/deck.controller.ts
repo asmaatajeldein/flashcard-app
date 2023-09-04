@@ -6,11 +6,9 @@ import {
   Body,
   Post,
   Patch,
-  UseGuards,
   ParseIntPipe,
 } from '@nestjs/common';
 import { GetUser } from 'src/auth/decorator';
-import { JwtGuard } from 'src/auth/guard';
 import { DeckService } from './deck.service';
 import { CreateDeckDto, EditDeckDto } from './dto';
 import {
@@ -24,7 +22,6 @@ import {
 
 @ApiTags('decks')
 @ApiBearerAuth('JWT-auth')
-@UseGuards(JwtGuard)
 @Controller()
 export class DeckController {
   constructor(private deckService: DeckService) {}
