@@ -23,9 +23,9 @@ export class DeckController {
   }
 
   // get a specific deck
-  @Get(':id')
+  @Get(':deckId')
   getDeckById(
-    @Param('id', ParseIntPipe) deckId: number,
+    @Param('deckId', ParseIntPipe) deckId: number,
     @GetUser('id') userId: number,
   ) {
     return this.deckService.getDeckById(userId, deckId);
@@ -38,9 +38,9 @@ export class DeckController {
   }
 
   // update a deck
-  @Patch(':id')
+  @Patch(':deckId')
   editDeckById(
-    @Param('id', ParseIntPipe) deckId: number,
+    @Param('deckId', ParseIntPipe) deckId: number,
     @GetUser('id') userId: number,
     @Body() dto: EditDeckDto,
   ) {
@@ -48,9 +48,9 @@ export class DeckController {
   }
 
   // remove a deck
-  @Delete(':id')
+  @Delete(':deckId')
   deleteDeckById(
-    @Param('id', ParseIntPipe) deckId: number,
+    @Param('deckId', ParseIntPipe) deckId: number,
     @GetUser('id') userId: number,
   ) {
     return this.deckService.deleteDeckById(userId, deckId);

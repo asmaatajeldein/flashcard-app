@@ -33,10 +33,10 @@ export class FlashcardController {
     return this.flashcardService.getFlashcards({ deckId, userId });
   }
 
-  @Get(':id')
+  @Get(':flashcardId')
   getFlashcardById(
     @Param('deckId', ParseIntPipe) deckId: number,
-    @Param('id', ParseIntPipe) flashcardId: number,
+    @Param('flashcardId', ParseIntPipe) flashcardId: number,
     @GetUser('id') userId: number,
   ) {
     return this.flashcardService.getFlashcardById({
@@ -46,10 +46,10 @@ export class FlashcardController {
     });
   }
 
-  @Patch(':id')
+  @Patch(':flashcardId')
   editFlashcardById(
     @Param('deckId', ParseIntPipe) deckId: number,
-    @Param('id', ParseIntPipe) flashcardId: number,
+    @Param('flashcardId', ParseIntPipe) flashcardId: number,
     @Body() dto: EditFlashcardDto,
     @GetUser('id') userId: number,
   ) {
@@ -61,10 +61,10 @@ export class FlashcardController {
     });
   }
 
-  @Delete(':id')
+  @Delete(':flashcardId')
   remove(
     @Param('deckId', ParseIntPipe) deckId: number,
-    @Param('id', ParseIntPipe) flashcardId: number,
+    @Param('flashcardId', ParseIntPipe) flashcardId: number,
     @GetUser('id') userId: number,
   ) {
     return this.flashcardService.deleteFlashcardById({
