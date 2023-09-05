@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { GetUser } from 'src/auth/decorator';
+import { GetUser } from 'src/common/decorators';
 
 @Controller('users')
 export class UserController {

@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { FlashcardService } from './flashcard.service';
 import { CreateFlashcardDto, EditFlashcardDto } from './dto';
-import { GetUser } from 'src/auth/decorator';
+import { GetUser } from 'src/common/decorators';
 
 @Controller()
 export class FlashcardController {

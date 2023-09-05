@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './strategy';
-import { RtStartegy } from './strategy/rt.strategy';
+import { JwtStrategy } from './strategies';
+import { RtStartegy } from './strategies/rt.strategy';
 
 @Module({
   imports: [JwtModule.register({})],

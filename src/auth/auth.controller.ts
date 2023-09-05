@@ -3,8 +3,8 @@ import { AuthService } from './auth.service';
 import { UserSignupDto, UserLoginDto } from './dto';
 
 import { Tokens } from './types';
-import { RtGuard } from './guard';
-import { GetUser, Public } from './decorator';
+import { RtGuard } from '../common/guards';
+import { GetUser, Public } from '../common/decorators';
 
 @Controller('auth')
 export class AuthController {

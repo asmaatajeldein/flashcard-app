@@ -8,7 +8,7 @@ import { UserModule } from './user/user.module';
 import { DeckModule } from './deck/deck.module';
 import { FlashcardModule } from './flashcard/flashcard.module';
 import { APP_GUARD, RouterModule, Routes } from '@nestjs/core';
-import { JwtGuard } from './auth/guard';
+import { JwtGuard } from './common/guards';
 
 const routes: Routes = [
   {

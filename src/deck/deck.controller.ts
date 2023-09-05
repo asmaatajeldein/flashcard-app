@@ -8,7 +8,7 @@ import {
   Patch,
   ParseIntPipe,
 } from '@nestjs/common';
-import { GetUser } from 'src/auth/decorator';
+import { GetUser } from 'src/common/decorators';
 import { DeckService } from './deck.service';
 import { CreateDeckDto, EditDeckDto } from './dto';
 
