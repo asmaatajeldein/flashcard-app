@@ -22,7 +22,7 @@ export class DeckService {
       where: { id: deckId, userId },
     });
 
-    if (!deck) return new NotFoundException('Cannot find this deck.');
+    if (!deck) return new NotFoundException('Cannot find specified deck');
 
     return deck;
   }
@@ -44,11 +44,11 @@ export class DeckService {
     });
 
     if (deck && deck.userId !== userId)
-      throw new UnauthorizedException('Access to resources denied');
+      throw new UnauthorizedException('Unauthorized access to resources');
 
     if (!deck)
       throw new NotFoundException(
-        `Can't find deck with id ${deckId} for the user ${userId}`,
+        `Cannot find deck with id ${deckId} for the user ${userId}`,
       );
 
     const editDeck = await this.prismaService.deck.update({
@@ -58,7 +58,7 @@ export class DeckService {
       },
     });
 
-    return { message: 'Deck updated successfully.', editDeck };
+    return { message: 'Deck was updated successfully', deck: editDeck };
   }
 
   async deleteDeckById(userId: number, deckId: number) {
@@ -67,11 +67,13 @@ export class DeckService {
     });
 
     if (deck && deck.userId !== userId)
-      throw new UnauthorizedException('Access to resources denied');
+      throw new UnauthorizedException(
+        'Unauthorized access to resources denied',
+      );
 
     if (!deck)
       throw new NotFoundException(
-        `Can't find deck with id ${deckId} for the user ${userId}`,
+        `Cannot find deck with id ${deckId} for the user ${userId}`,
       );
 
     await this.prismaService.deck.delete({

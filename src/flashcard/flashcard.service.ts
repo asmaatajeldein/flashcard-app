@@ -32,7 +32,7 @@ export class FlashcardService {
       },
     });
 
-    return { message: 'Flashcard was created successfully.', flashcard };
+    return { message: 'Flashcard was created successfully', flashcard };
   }
 
   async getFlashcards(args: { deckId: number; userId: number }) {
@@ -52,7 +52,7 @@ export class FlashcardService {
 
     if (!flashcards) return null;
 
-    return { flashcards };
+    return { ...flashcards };
   }
 
   async getFlashcardById(args: {
@@ -118,7 +118,10 @@ export class FlashcardService {
       data: { ...args.dto },
     });
 
-    return { updatedFlashcard };
+    return {
+      message: 'Flashcard was updated successfully',
+      flashcard: updatedFlashcard,
+    };
   }
 
   async deleteFlashcardById(args: {
@@ -152,6 +155,9 @@ export class FlashcardService {
       },
     });
 
-    return { message: 'Flashcard deleted successfully', deletedFlashcard };
+    return {
+      message: 'Flashcard was deleted successfully',
+      flashcard: deletedFlashcard,
+    };
   }
 }
