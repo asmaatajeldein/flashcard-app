@@ -1,0 +1,817 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Flashcard API",
+    "version": "1.0.0"
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://localhost:3333/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Authentication & Authorization"
+    },
+    {
+      "name": "users",
+      "description": "Access to user profile"
+    },
+    {
+      "name": "decks",
+      "description": "CRUD operations for decks"
+    },
+    {
+      "name": "flashcards",
+      "description": "CRUD operations for flashcards"
+    }
+  ],
+  "paths": {
+    "/auth/local/signup": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "User signup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tokens"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tokens"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Credentials taken"
+          }
+        },
+        "security": []
+      }
+    },
+    "/auth/local/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "User login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tokens"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tokens"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Invalid credentials"
+          }
+        },
+        "security": []
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "User logout",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Generate new access token & refresh token",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "403": {
+            "description": "Access denied"
+          }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get user info",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/decks": {
+      "get": {
+        "tags": [
+          "decks"
+        ],
+        "summary": "Get all user's decks",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Deck"
+                  }
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Deck"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "decks"
+        ],
+        "summary": "Create deck",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Deck"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Deck"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Deck was created successfully"
+                    },
+                    "deck": {
+                      "$ref": "#/components/schemas/Deck"
+                    }
+                  }
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Deck was created successfully"
+                    },
+                    "deck": {
+                      "$ref": "#/components/schemas/Deck"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/decks/{deckId}": {
+      "get": {
+        "tags": [
+          "decks"
+        ],
+        "summary": "Get specified deck",
+        "parameters": [
+          {
+            "name": "deckId",
+            "in": "path",
+            "description": "ID of deck to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Deck"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/Deck"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cannot find specified deck"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "decks"
+        ],
+        "summary": "Edit specified deck",
+        "parameters": [
+          {
+            "name": "deckId",
+            "in": "path",
+            "description": "ID of deck to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Deck was updated successfully"
+                    },
+                    "deck": {
+                      "$ref": "#/components/schemas/Deck"
+                    }
+                  }
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Deck was updated successfully"
+                    },
+                    "deck": {
+                      "$ref": "#/components/schemas/Deck"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to resources"
+          },
+          "404": {
+            "description": "Cannot find specified deck"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "decks"
+        ],
+        "summary": "Delete specified deck",
+        "parameters": [
+          {
+            "name": "deckId",
+            "in": "path",
+            "description": "ID of deck to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Deck was deleted successfully"
+                    },
+                    "deck": {
+                      "$ref": "#/components/schemas/Deck"
+                    }
+                  }
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Deck was deleted successfully"
+                    },
+                    "deck": {
+                      "$ref": "#/components/schemas/Deck"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to resources"
+          },
+          "404": {
+            "description": "Cannot find specified deck"
+          }
+        }
+      }
+    },
+    "/decks/{deckId}/flashcards": {
+      "get": {
+        "tags": [
+          "flashcards"
+        ],
+        "summary": "Get flashcards of specified deck",
+        "parameters": [
+          {
+            "name": "deckId",
+            "in": "path",
+            "description": "ID of deck to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Flashcard"
+                  }
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Flashcard"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "flashcards"
+        ],
+        "summary": "Create flashcard",
+        "parameters": [
+          {
+            "name": "deckId",
+            "in": "path",
+            "description": "ID of deck to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Flashcard"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Flashcard"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Deck was created successfully"
+                    },
+                    "deck": {
+                      "$ref": "#/components/schemas/Deck"
+                    }
+                  }
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Deck was created successfully"
+                    },
+                    "deck": {
+                      "$ref": "#/components/schemas/Deck"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/decks/{deckId}/flashcards/{flashcardId}": {
+      "get": {
+        "tags": [
+          "flashcards"
+        ],
+        "summary": "Get specified flashcard",
+        "parameters": [
+          {
+            "name": "deckId",
+            "in": "path",
+            "description": "ID of deck to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "flashcardId",
+            "in": "path",
+            "description": "ID of flashcard to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Deck"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/Deck"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to resources"
+          },
+          "404": {
+            "description": "Cannot find specified deck/flashcard"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "flashcards"
+        ],
+        "summary": "Edit specified flashcard",
+        "parameters": [
+          {
+            "name": "deckId",
+            "in": "path",
+            "description": "ID of deck to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "flashcardId",
+            "in": "path",
+            "description": "ID of flashcard to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Flashcard was updated successfully"
+                    },
+                    "deck": {
+                      "$ref": "#/components/schemas/Deck"
+                    }
+                  }
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Flashcard was updated successfully"
+                    },
+                    "deck": {
+                      "$ref": "#/components/schemas/Deck"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to resources"
+          },
+          "404": {
+            "description": "Cannot find specified deck/flashcard"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "flashcards"
+        ],
+        "summary": "Delete specified flashcard",
+        "parameters": [
+          {
+            "name": "deckId",
+            "in": "path",
+            "description": "ID of deck to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "flashcardId",
+            "in": "path",
+            "description": "ID of flashcard to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Flashcard was deleted successfully"
+                    },
+                    "deck": {
+                      "$ref": "#/components/schemas/Deck"
+                    }
+                  }
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Flashcard was deleted successfully"
+                    },
+                    "deck": {
+                      "$ref": "#/components/schemas/Deck"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to resources"
+          },
+          "404": {
+            "description": "Cannot find specified deck/flashcard"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Tokens": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.sFLTFUjPfqvHMBFyt1K2RqX1Xj9QQmR-_Sf4IUVQ6rM"
+          },
+          "refresh_token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE1NzE4MzIwMjJ9.TctKY5szOK8q3GukNTKAnw5s6L-Nuc4jgXc5hqZJWdg"
+          }
+        }
+      },
+      "UserRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": 12345678
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "email": {
+            "type": "string",
+            "example": "user@email.com"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2023-09-03T15:09:56.388Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2023-09-05T13:56:18.432Z"
+          }
+        }
+      },
+      "Deck": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Astronomy"
+          },
+          "description": {
+            "type": "string",
+            "example": "Space Science"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      },
+      "Flashcard": {
+        "type": "object",
+        "properties": {
+          "front": {
+            "type": "string",
+            "example": "Jupiter"
+          },
+          "back": {
+            "type": "string",
+            "example": "The largest planet of the solar system"
+          }
+        },
+        "required": [
+          "front"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
